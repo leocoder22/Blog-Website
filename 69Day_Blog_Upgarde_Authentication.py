@@ -156,7 +156,10 @@ def get_all_posts():
 # TODO: Allow logged-in users to comment on posts
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
-    image_url = gravatar_url(current_user.email, size=200)
+    if current_user.is_authenticated:
+        image_url = gravatar_url(current_user.email, size=200)
+    else:
+        image_url = None  # or use a default image
     requested_post = db.get_or_404(BlogPost, post_id)
     form = CommentForm()
 
